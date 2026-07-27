@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8" />
@@ -709,7 +709,7 @@
         <div class="plus">+</div>
         <div class="primer-box policy">
           <div class="primer-title">政策性加徵關稅</div>
-          <div class="primer-copy">例如川普對等關稅、暫時性加徵。</div>
+          <div class="primer-copy">例如川普301條款－強迫勞動關稅。</div>
         </div>
         <div class="plus">=</div>
         <div class="primer-box total">
@@ -792,7 +792,7 @@
             <th>進口市場</th>
             <th>產區</th>
             <th>產品關稅</th>
-            <th>川普政策性加徵</th>
+            <th>川普301條款－強迫勞動關稅</th>
             <th>協定</th>
             <th>原產地條件</th>
           </tr>
@@ -982,6 +982,7 @@
 
     function trumpTariff(rule) {
       if (rule.market !== "美國") return "不適用";
+      if (rule.origin === "越南" || rule.origin === "埃及") return "12.5%";
       if (rule.origin === "薩爾瓦多" || rule.origin === "瓜地馬拉") return "10% → 0%";
       return "10%";
     }
@@ -989,11 +990,10 @@
     function trumpAlertHtml(rule) {
       if (rule.market !== "美國") return "";
       const extra = rule.origin === "薩爾瓦多" || rule.origin === "瓜地馬拉"
-        ? `<div class="us-alert-extra">若符合《中美洲貿易協定》（CAFTA-DR）原產地規定，成衣可能免除政策性加徵，即 10% → 0%。</div>`
+        ? `<div class="us-alert-extra">若符合《中美洲貿易協定》（CAFTA-DR）原產地規定，成衣可免除川普301條款－強迫勞動關稅，即 10% → 0%。</div>`
         : "";
       const base = `
-        <div class="us-alert-main">除了產品本身關稅，仍須外加川普政策性加徵關稅<span class="us-alert-rate">10%</span></div>
-        <div class="us-alert-date">(目前預估川普暫時性關稅將課徵至2026/7/24)</div>
+        <div class="us-alert-main">除了產品本身關稅，仍須外加川普301條款－強迫勞動關稅<span class="us-alert-rate">${trumpTariff(rule)}</span></div>
         ${extra}
       `;
       return base;
@@ -1181,7 +1181,7 @@
           <td>${escapeHtml(rule.market)}</td>
           <td>${escapeHtml(rule.origin)}</td>
           <td><strong>${escapeHtml(product)}</strong><br><span class="pill ${pillClass(rule.status)}">${escapeHtml(rule.status)}</span></td>
-          <td><strong>${escapeHtml(trump)}</strong><br><span class="small">${escapeHtml(rule.market === "美國" ? "政策性加徵參考" : "僅美國市場顯示")}</span></td>
+          <td><strong>${escapeHtml(trump)}</strong><br><span class="small">${escapeHtml(rule.market === "美國" ? "301強迫勞動關稅" : "僅美國市場顯示")}</span></td>
           <td>${escapeHtml(rule.agreement)}</td>
           <td>${escapeHtml(rule.originRule)}${rule.details ? `<br><br><span class="small">${rule.details.map(escapeHtml).join("<br>")}</span>` : ""}</td>
         </tr>
